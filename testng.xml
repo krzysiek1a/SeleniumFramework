@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="Suite">
+    <listeners>
+        <listener class-name="org.example.testComponents.Listeners" />
+    </listeners>
+    <test name="Form">
+        <classes>
+            <class name="org.example.FormTest" />
+        </classes>
+    </test>
+    <test name="Submit">
+        <classes>
+            <class name="org.example.SubmitTest" >
+                <methods>
+                    <include name="errorPageTest" />
+                    <include name="submitPageTest" />
+                </methods>
+            </class>
+        </classes>
+    </test>
+</suite>
