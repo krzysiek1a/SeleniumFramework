@@ -3,16 +3,14 @@ package org.example.resources;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
+import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 
 import java.io.File;
 import java.io.IOException;
-import org.apache.commons.io.FileUtils;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Date;
 
 public class ExtentReporter {
@@ -24,7 +22,7 @@ public class ExtentReporter {
         ExtentSparkReporter reporter = new ExtentSparkReporter(path + "\\ExtentReport_" + reportAndScreensDate + ".html");
         reporter.config().setReportName("Web Automation Results");
         reporter.config().setDocumentTitle("Test Results");
-        reporter.config().setTheme(Theme.DARK);
+        reporter.config().setTheme(Theme.STANDARD);
         extent = new ExtentReports();
         extent.attachReporter(reporter);
         return extent;

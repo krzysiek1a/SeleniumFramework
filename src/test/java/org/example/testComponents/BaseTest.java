@@ -27,7 +27,9 @@ public class BaseTest {
     public WebDriver initializeDriver() {
         Properties properties = getProperties();
 
-        String browserName = properties.getProperty("browser");
+        String browserName = System.getProperty("browser") != null
+                ? System.getProperty("browser")
+                : properties.getProperty("browser");
         String pageLoadTimeout = properties.getProperty("pageLoadTimeout");
         String windowsMaximize = properties.getProperty("windowsMaximize");
         String deleteAllCookies = properties.getProperty("deleteAllCookies");
