@@ -3,11 +3,14 @@ package org.example.testComponents;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
+import org.apache.commons.io.FileUtils;
 import org.example.resources.ExtentReporter;
 import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import java.nio.file.Files;
+import java.io.*;
 
 import static org.example.resources.ExtentReporter.getReportObject;
 import static org.example.resources.ExtentReporter.getScreenshot;
@@ -16,6 +19,15 @@ public class Listeners extends BaseTest implements ITestListener {
     public static ExtentTest test;
     ExtentReports extent = getReportObject();
     static ThreadLocal<ExtentTest> extentTest = new ThreadLocal<>();
+
+    @Override
+    public void onStart(ITestContext context) {
+        try {
+            FileUtils.cleanDirectory(new File("reports"));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     @Override
     public void onTestStart(ITestResult result) {

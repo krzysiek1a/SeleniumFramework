@@ -16,10 +16,10 @@ import java.util.Date;
 public class ExtentReporter {
     static ExtentReports extent;
     static final String reportAndScreensDate = getDate();
-    private static final String path = System.getProperty("user.dir") + "\\reports\\" + reportAndScreensDate;
+    private static final String path = System.getProperty("user.dir") + "\\reports\\";
     public static ExtentReports getReportObject() {
 //        String dateName = getDate();
-        ExtentSparkReporter reporter = new ExtentSparkReporter(path + "\\ExtentReport_" + reportAndScreensDate + ".html");
+        ExtentSparkReporter reporter = new ExtentSparkReporter(path + "\\ExtentReport.html");
         reporter.config().setReportName("Web Automation Results");
         reporter.config().setDocumentTitle("Test Results");
         reporter.config().setTheme(Theme.STANDARD);
@@ -38,7 +38,7 @@ public class ExtentReporter {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return "\\reports\\" + reportAndScreensDate + "\\" + testCaseName + currentDateTime + ".png";
+        return testCaseName + currentDateTime + ".png";
     }
 
     private static String getDate() {
