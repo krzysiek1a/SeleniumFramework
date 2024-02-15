@@ -15,7 +15,7 @@ import java.util.List;
 public class FormTest extends BaseTest {
 
     @Test(dataProvider = "getData")
-    public void formPageTest(HashMap<String, String> input) {
+    public void formDataPageTest(HashMap<String, String> input) {
         // Index page ==================================================================================================
         reportLog("Go to index page.");
         indexPage
@@ -37,7 +37,7 @@ public class FormTest extends BaseTest {
     }
 
     @Test
-    public void productPageTest() {
+    public void productDetailsPageTest() {
         // Index page ==================================================================================================
         indexPage
                 .goToIndexPage();

@@ -1,11 +1,8 @@
 package org.example.testComponents;
 
-import com.aventstack.extentreports.ExtentReports;
-import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
 import org.apache.commons.io.FileUtils;
 import org.example.pageObjects.IndexPage;
-import org.example.resources.ExtentReport;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -13,15 +10,14 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeSuite;
 import org.testng.annotations.BeforeTest;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Properties;
 
 public class BaseTest {
@@ -29,14 +25,13 @@ public class BaseTest {
     public IndexPage indexPage;
 
     public WebDriver initializeDriver() {
-        Properties properties = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/main/java/org/example/resources/GlobalData.properties")) {
-            properties.load(fis);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Properties properties = getProperties();
 
         String browserName = properties.getProperty("browser");
+        String pageLoadTimeout = properties.getProperty("pageLoadTimeout");
+        String windowsMaximize = properties.getProperty("windowsMaximize");
+        String deleteAllCookies = properties.getProperty("deleteAllCookies");
+        String waitTimeout = properties.getProperty("waitTimeout");
 
         if (browserName.equalsIgnoreCase("chrome")) {
              driver = new ChromeDriver();
@@ -46,22 +41,31 @@ public class BaseTest {
              driver = new EdgeDriver();
         }
 
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().window().maximize();
+        if (deleteAllCookies.equalsIgnoreCase("true")) {
+            driver.manage().deleteAllCookies();
+        }
+        if (windowsMaximize.equalsIgnoreCase("true")) {
+            driver.manage().window().maximize();
+        }
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(Integer.parseInt(waitTimeout)));
+        driver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(Integer.parseInt(pageLoadTimeout)));
 
         return driver;
     }
 
-    public String getScreenshot(String testCaseName, WebDriver driver) {
-        TakesScreenshot ts = (TakesScreenshot) driver;
-        File source = ts.getScreenshotAs(OutputType.FILE);
-        File file = new File(System.getProperty("user.dir") + "\\reports\\" + testCaseName + ".png");
-        try {
-            FileUtils.copyFile(source, file);
+    private static Properties getProperties() {
+        Properties properties = new Properties();
+        try (FileInputStream fis = new FileInputStream("src/main/java/org/example/resources/GlobalData.properties")) {
+            properties.load(fis);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return "\\reports\\" + testCaseName + ".png";
+        return properties;
+    }
+
+    public void reportLog(String message) {
+        Listeners.extentTest.get().log(Status.INFO, message);
     }
 
     @BeforeTest
@@ -71,12 +75,10 @@ public class BaseTest {
         return indexPage;
     }
 
-    public void reportLog(String message) {
-        Listeners.extentTest.get().log(Status.INFO, message);
-    }
-
     @AfterTest
     public void tearDown() {
         driver.close();
     }
+
+
 }

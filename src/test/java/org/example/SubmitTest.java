@@ -4,12 +4,13 @@ import com.aventstack.extentreports.ExtentTest;
 import org.example.pageObjects.FormPage;
 import org.example.pageObjects.SubmitPage;
 import org.example.testComponents.BaseTest;
+import org.example.testComponents.Retry;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class SubmitTest extends BaseTest {
 
-    @Test
+    @Test(retryAnalyzer = Retry.class)
     public void submitPageTest() {
         // Index page ==================================================================================================
         indexPage
