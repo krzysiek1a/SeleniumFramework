@@ -1,6 +1,9 @@
 package org.example.testComponents;
 
 import com.aventstack.extentreports.Status;
+import io.cucumber.java.After;
+import io.cucumber.java.AfterAll;
+import io.cucumber.java.AfterStep;
 import org.apache.commons.io.FileUtils;
 import org.example.pageObjects.IndexPage;
 import org.openqa.selenium.OutputType;
@@ -81,6 +84,4 @@ public class BaseTest {
     public void tearDown() {
         driver.close();
     }
-
-
 }
